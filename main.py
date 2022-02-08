@@ -1,16 +1,35 @@
-# This is a sample Python script.
+import os
+import glob
+import random
+import numpy as np
+import cv2
+from sklearn.ensemble import RandomForestClassifier
+import pandas
+from xml.etree import ElementTree
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+def load_data(path):
+    # path_ann = os.path.join(path, 'annotations')
+    # list_ann = os.listdir(path_ann)
+
+    path_img = os.path.join(path, 'images')
+
+    path_ann = os.path.join(path, 'annotations/*.xml')
+    list_ann = glob.glob(path_ann)
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+    names = []
+
+    for el in list_ann:
+        dom = ElementTree.parse(el)
+        names.append(dom.findall('object/name'))
+
+    print(names)
+    return
 
 
-# Press the green button in the gutter to run the script.
+def main():
+    load_data('data')
+    return
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main()
