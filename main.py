@@ -54,7 +54,7 @@ def split_data(path):
     #         shutil.copy(el['annotation'], path_train_ann)
     #         shutil.copy(el['image'], path_train_img)
     #     i += 1
-    #
+
     # k = 1
     # for el in data_nonespeed:
     #     if (k % 4 == 0):
@@ -77,9 +77,33 @@ def load_data(path):
     data = []
     if (len(list_img) == len(list_ann)):
         for el in range(len(list_ann)):
-            data.append({'annotation': list_ann[el], 'image': cv2.imread(list_img[el])})
+            data.append({'annotation': list_ann[el], 'image': cv2.imread(list_img[el]), 'speedlimit': None})
+    else:
+        print('Wrong data set!')
 
     return data
+
+def crop_images(data):
+    for el in data:
+        parser = ElementTree.parse(el['annotation'])
+        for object in parser.findall('.//object'):
+            name = object.find('name').text
+
+            xmin = int(object.find('bndbox/xmin').text)
+            ymin = int(object.find('bndbox/ymin').text)
+            xmax = int(object.find('bndbox/xmax').text)
+            ymax = int(object.find('bndbox/ymax').text)
+
+            el['image'] = el['image'][ymin:ymax, xmin:xmax]
+
+            if (name == 'speedlimit'):
+                el['speedlimit'] = 1
+            else:
+                el['speedlimit'] = 0
+
+
+
+    return
 
 def main():
     # split_data('data')
@@ -87,8 +111,9 @@ def main():
     data_train = load_data('C:/Users/filip/Documents/GitHub/train')
     data_test = load_data('C:/Users/filip/Documents/GitHub/test')
 
-    cv2.imshow('first train image', data_train[0]['image'])
-    cv2.waitKey(0)
+    crop_images(data_train)
+
+
     return
 
 if __name__ == '__main__':
