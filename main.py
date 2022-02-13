@@ -8,65 +8,65 @@ from sklearn.ensemble import RandomForestClassifier
 import pandas
 from xml.etree import ElementTree
 
-# Funkcja dzielaca dane z folderu 'data' na zbior testowy oraz treningowy
-def split_data(path):
-    path_ann = os.path.join(path, 'annotations/*.xml')
-    list_ann = glob.glob(path_ann)
+# Split dataset to training and test datasets
+# def split_data(path):
+#     path_ann = os.path.join(path, 'annotations/*.xml')
+#     list_ann = glob.glob(path_ann)
+#
+#     path_img = os.path.join(path, 'images/*.png')
+#     list_img = glob.glob(path_img)
+#
+#     data = []
+#     data_speed = []
+#     data_nonespeed = []
+#
+#     if(len(list_img) == len(list_ann)):
+#         for el in range(len(list_ann)):
+#             data.append({'annotation': list_ann[el], 'image': list_img[el], 'speedlimit': None})
+#
+#     for el in data:
+#         parser = ElementTree.parse(el['annotation'])
+#         for object in parser.findall('object'):
+#             name = object.findall('name')
+#             for n in name:
+#                 if(n.text == 'speedlimit'):
+#                     el['speedlimit'] = 1
+#
+#     for el in data:
+#         if(el['speedlimit'] == 1):
+#             data_speed.append(el)
+#         else:
+#             data_nonespeed.append(el)
+#
+#     path_train_ann = os.path.abspath('C:/Users/filip/Documents/GitHub/train/annotations')
+#     path_train_img = os.path.abspath('C:/Users/filip/Documents/GitHub/train/images')
+#
+#     path_test_ann = os.path.abspath('C:/Users/filip/Documents/GitHub/test/annotations')
+#     path_test_img = os.path.abspath('C:/Users/filip/Documents/GitHub/test/images')
+#
+#     Export splited data
+#     i = 1
+#     for el in data_speed:
+#         if(i % 4 == 0):
+#             shutil.copy(el['annotation'], path_test_ann)
+#             shutil.copy(el['image'], path_test_img)
+#         else:
+#             shutil.copy(el['annotation'], path_train_ann)
+#             shutil.copy(el['image'], path_train_img)
+#         i += 1
+#
+#     k = 1
+#     for el in data_nonespeed:
+#         if (k % 4 == 0):
+#             shutil.copy(el['annotation'], path_test_ann)
+#             shutil.copy(el['image'], path_test_img)
+#         else:
+#             shutil.copy(el['annotation'], path_train_ann)
+#             shutil.copy(el['image'], path_train_img)
+#         k += 1
+#     return
 
-    path_img = os.path.join(path, 'images/*.png')
-    list_img = glob.glob(path_img)
-
-    data = []
-    data_speed = []
-    data_nonespeed = []
-
-    if(len(list_img) == len(list_ann)):
-        for el in range(len(list_ann)):
-            data.append({'annotation': list_ann[el], 'image': list_img[el], 'speedlimit': None})
-
-    for el in data:
-        parser = ElementTree.parse(el['annotation'])
-        for object in parser.findall('object'):
-            name = object.findall('name')
-            for n in name:
-                if(n.text == 'speedlimit'):
-                    el['speedlimit'] = 1
-
-    for el in data:
-        if(el['speedlimit'] == 1):
-            data_speed.append(el)
-        else:
-            data_nonespeed.append(el)
-
-    path_train_ann = os.path.abspath('C:/Users/filip/Documents/GitHub/train/annotations')
-    path_train_img = os.path.abspath('C:/Users/filip/Documents/GitHub/train/images')
-
-    path_test_ann = os.path.abspath('C:/Users/filip/Documents/GitHub/test/annotations')
-    path_test_img = os.path.abspath('C:/Users/filip/Documents/GitHub/test/images')
-
-    # Podział danych na zbior testowy i treningowy
-    # i = 1
-    # for el in data_speed:
-    #     if(i % 4 == 0):
-    #         shutil.copy(el['annotation'], path_test_ann)
-    #         shutil.copy(el['image'], path_test_img)
-    #     else:
-    #         shutil.copy(el['annotation'], path_train_ann)
-    #         shutil.copy(el['image'], path_train_img)
-    #     i += 1
-
-    # k = 1
-    # for el in data_nonespeed:
-    #     if (k % 4 == 0):
-    #         shutil.copy(el['annotation'], path_test_ann)
-    #         shutil.copy(el['image'], path_test_img)
-    #     else:
-    #         shutil.copy(el['annotation'], path_train_ann)
-    #         shutil.copy(el['image'], path_train_img)
-    #     k += 1
-    return
-
-# Funkcja wczytujace dane ze zbioru testowego i treningowego
+# Load data from train dataset
 def load_data(path):
     path_ann = os.path.abspath(os.path.join(path, 'annotations/*.xml'))
     path_img = os.path.abspath(os.path.join(path, 'images/*.png'))
@@ -83,28 +83,40 @@ def load_data(path):
 
     return data
 
+# Generate random rectangle // not working with BoVW
 # def generate_random_frame(image_height, image_width):
+#     max_size = 100
+#     min_size = 40
+#
 #     y_min = random.randint(0, image_height)
 #     x_min = random.randint(0, image_width)
-#     y_max = random.randint(y_min, image_height)
-#     x_max = random.randint(x_min, image_width)
+#     y_max = random.randint(y_min, y_min + max_size)
+#     x_max = random.randint(x_min, x_min + max_size)
 #
 #     height = y_max - y_min
 #     width = x_max - x_min
 #
-#     dimensions = [height, width]
+#     while(height < min_size or height > max_size or y_max > image_height):
+#         y_max = random.randint(y_min, y_min + max_size)
+#         height = y_max - y_min
 #
-#     return x_min, y_min, x_max, y_max, dimensions
+#     while (width < min_size or width > max_size or x_max > image_width):
+#         x_max = random.randint(x_min, x_min + max_size)
+#         width = x_max - x_min
 #
+#     return x_min, y_min, x_max, y_max
+
+# Check intersection between 2 rectangles
 # def isRectangleOverlap(R1, R2):
 #     if (R1[0] >= R2[2]) or (R1[2] <= R2[0]) or (R1[3] <= R2[1]) or (R1[1] >= R2[3]):
 #         return False
 #     else:
 #         return True
 
+# Crop images from train dataset
 def crop_images(data):
     cropped_data = []
-    # i = 1
+    # i = 0
     # k = 0
     for el in data:
         height, width, _ = el['image'].shape
@@ -129,36 +141,25 @@ def crop_images(data):
             if(width_cut > 0.1 * width and height_cut > 0.1 * height):
                 cropped_data.append({'image': cropped_img, 'label': el['speedlimit']})
 
-            # xmin_rand, ymin_rand, xmax_rand, ymax_rand, [height_rand, width_rand] = generate_random_frame(height, width)
-            #
-            # frame_A = [xmin, ymin, xmax, ymax]
-            # frame_B = [xmin_rand, ymin_rand, xmax_rand, ymax_rand]
-            # intersection = isRectangleOverlap(frame_A, frame_B)
-            #
-            # while((width_rand < 0.1 * width or height_rand < 0.1 * height) and intersection == True):
-            #     xmin_rand, ymin_rand, xmax_rand, ymax_rand, [height_rand, width_rand] = generate_random_frame(height, width)
+            # Generate random image // not working
+            # if(i % 50 == 0):
+            #     xmin_rand, ymin_rand, xmax_rand, ymax_rand = generate_random_frame(height, width)
+            #     frame_A = [xmin, ymin, xmax, ymax]
             #     frame_B = [xmin_rand, ymin_rand, xmax_rand, ymax_rand]
             #     intersection = isRectangleOverlap(frame_A, frame_B)
-
-
-            # rand_img = el['image'][ymin_rand:ymax_rand, xmin_rand:xmax_rand]
-            # cv2.imshow('rand', rand_img)
-            # cv2.waitKey(0)
-
-            # if(i % 50 == 0):
-                # k += 1
-                # cropped_data.append({'image': rand_img, 'label': 0})
-
-            # i += 1
-
-            # if(i == 565):
-            #     rand_rect = cv2.rectangle(el['image'], (xmin_rand, ymin_rand), (xmax_rand, ymax_rand), (255, 0, 0), -1)
-            #     rect = cv2.rectangle(el['image'], (xmin, ymin), (xmax, ymax), (0, 0, 0), -1)
-            #     cv2.imshow(str(intersection), rect)
-            #     cv2.waitKey(0)
+            #     while(intersection == True):
+            #         xmin_rand, ymin_rand, xmax_rand, ymax_rand = generate_random_frame(height, width)
+            #         frame_B = [xmin_rand, ymin_rand, xmax_rand, ymax_rand]
+            #         intersection = isRectangleOverlap(frame_A, frame_B)
+            #
+            #     rand_img = el['image'][ymin_rand:ymax_rand, xmin_rand:xmax_rand]
+            #     # cv2.imshow('rand', rand_img)
+            #     # cv2.waitKey(0)
+            #     cropped_data.append({'image': rand_img, 'label': 0})
 
     return cropped_data
 
+# Clusterization - Bag of Visual Words
 def learn_bovw(data):
     dict_size = 128
     bow = cv2.BOWKMeansTrainer(dict_size)
@@ -176,6 +177,7 @@ def learn_bovw(data):
     np.save('voc.npy', vocabulary)
     return
 
+# Extracting features from data - matching descriptors
 def extract_features(data):
     sift = cv2.SIFT_create()
     flann = cv2.FlannBasedMatcher_create()
@@ -188,6 +190,7 @@ def extract_features(data):
         sample['desc'] = desc
     return data
 
+# Train model - RandomForestClassifier
 def train(data):
     descs = []
     labels = []
@@ -200,6 +203,7 @@ def train(data):
 
     return rf
 
+# Read input data from console
 def getInput():
     input_data = []
     classify = input("Type 'classify' to start testing:")
@@ -218,6 +222,7 @@ def getInput():
 
     return input_data
 
+# Prepare test data for prediction
 def prepare_test_data(path, data):
     data_prepared = []
 
@@ -228,10 +233,13 @@ def prepare_test_data(path, data):
         xmin, xmax, ymin, ymax = el['cordinates']
         img = img[ymin:ymax, xmin:xmax]
         data_prepared.append({'image': img})
+        # cv2.imshow('Input frame', img)
+        # cv2.waitKey(0)
         path_img = path_img = os.path.join(path, 'images')
 
     return data_prepared
 
+# Return model prediction in console
 def predict(rf, data):
     for sample in data:
         if sample['desc'] is not None:
@@ -240,16 +248,18 @@ def predict(rf, data):
                 print('speedlimit')
             else:
                 print('other')
+        else:
+            print('other')
     return
 
 def main():
     # split_data('data')
 
+    # Load path from dataset
     path_train = 'C:/Users/filip/Documents/GitHub/train'
     path_test = 'C:/Users/filip/Documents/GitHub/test'
 
     data_train = load_data(path_train)
-    # data_test = load_data(path_test)
 
     data_train = crop_images(data_train)
 
@@ -265,12 +275,9 @@ def main():
     input_data = getInput()
     data_test = prepare_test_data(path_test, input_data)
 
-    print('extracting test features')
     data_test = extract_features(data_test)
 
     predict(rf, data_test)
-
-
 
     return
 
