@@ -2,7 +2,7 @@
 **Autor: Filip Sowinski**
 
 **Założony cel projketu:**
-Wykonany projekt realizuje zadanie klasyfikacji znaków na znaki ograniczenia prędkości oraz inne.
+Wykonany projekt realizuje zadanie klasyfikacji znaków na dwie grupy: znaki ograniczenia prędkości oraz pozostałe.
 
 **Sposób obsługi projektu:**
 W celu uruchomienia projektu należy przypisac ścieżkę do danych ze zbioru testowego oraz treningowego do zmiennych path_train oraz path_test znajdujących się w głównej sekcji kodu (main). Następnie po uruchomieniu pliku main.py należy w konsoli wpisać ciąg znaków 'classify', który pozwoli na wczytanie danych testowych zgodnie z przyjętą strukturą przykładowego wejścia w instrukcji. Po zakończeniu etapu predykcji dane zwracane są poprzez konsolę zgodnie z przykładowym formatem wyjścia.
