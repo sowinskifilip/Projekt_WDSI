@@ -161,7 +161,7 @@ def crop_images(data):
 
 # Clusterization - Bag of Visual Words
 def learn_bovw(data):
-    dict_size = 128
+    dict_size = 256
     bow = cv2.BOWKMeansTrainer(dict_size)
 
     sift = cv2.SIFT_create()
@@ -206,16 +206,16 @@ def train(data):
 # Read input data from console
 def getInput():
     input_data = []
-    classify = input("Type 'classify' to start testing:")
+    classify = input()
     while(classify != 'classify'):
-        classify = input('Try again:')
+        classify = input()
 
-    n_files = input('Number of files to test:')
+    n_files = input()
     for i in range(0, int(n_files)):
-        file = input('Name of the file:')
-        n_images = input('Number of images to test:')
+        file = input()
+        n_images = input()
         for k in range(0, int(n_images)):
-            cordinates = input('Cordinates (xmin xmax ymin ymax):').split()
+            cordinates = input().split()
             for i in range(0, len(cordinates)):
                 cordinates[i] = int(cordinates[i])
             input_data.append({'filename': file, 'cordinates': cordinates})
@@ -256,20 +256,20 @@ def main():
     # split_data('data')
 
     # Load path from dataset
-    path_train = 'C:/Users/filip/Documents/GitHub/train'
-    path_test = 'C:/Users/filip/Documents/GitHub/test'
+    path_train = "../train"
+    path_test = "../test"
 
     data_train = load_data(path_train)
 
     data_train = crop_images(data_train)
 
-    print('learning BoVW')
+    # print('learning BoVW')
     learn_bovw(data_train)
 
-    print('extracting train features')
+    # print('extracting train features')
     data_train = extract_features(data_train)
 
-    print('training')
+    # print('training')
     rf = train(data_train)
 
     input_data = getInput()
