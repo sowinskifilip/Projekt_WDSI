@@ -8,6 +8,23 @@ from sklearn.ensemble import RandomForestClassifier
 import pandas
 from xml.etree import ElementTree
 
+# TODO Jakość kodu i raport (4/4)
+
+
+# TODO Skuteczność klasyfikacji 0.481 (0/4)
+# TODO [0.00, 0.50) - 0.0
+# TODO [0.50, 0.55) - 0.5
+# TODO [0.55, 0.60) - 1.0
+# TODO [0.60, 0.65) - 1.5
+# TODO [0.65, 0.70) - 2.0
+# TODO [0.70, 0.75) - 2.5
+# TODO [0.75, 0.80) - 3.0
+# TODO [0.80, 0.85) - 3.5
+# TODO [0.85, 1.00) - 4.0
+
+
+# TODO Skuteczność detekcji (0/2)
+
 # Split dataset to training and test datasets
 # def split_data(path):
 #     path_ann = os.path.join(path, 'annotations/*.xml')
