@@ -74,6 +74,9 @@ def load_data(path):
     list_ann = glob.glob(path_ann)
     list_img = glob.glob(path_img)
 
+    list_ann.sort()
+    list_img.sort()
+
     data = []
     if (len(list_img) == len(list_ann)):
         for el in range(len(list_ann)):
