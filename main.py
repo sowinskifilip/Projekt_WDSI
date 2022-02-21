@@ -11,7 +11,7 @@ from xml.etree import ElementTree
 # TODO Jakość kodu i raport (4/4)
 
 
-# TODO Skuteczność klasyfikacji 0.481 (0/4)
+# TODO Skuteczność klasyfikacji 0.855 (4/4)
 # TODO [0.00, 0.50) - 0.0
 # TODO [0.50, 0.55) - 0.5
 # TODO [0.55, 0.60) - 1.0
@@ -24,6 +24,8 @@ from xml.etree import ElementTree
 
 
 # TODO Skuteczność detekcji (0/2)
+
+# TODO Poprawki po terminie. (-1)
 
 # Split dataset to training and test datasets
 # def split_data(path):
